@@ -1,59 +1,59 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { 
-  Container, 
-  Box, 
-  Typography, 
-  TextField, 
-  Button, 
-  Paper, 
-  Grid, 
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Paper,
+  Grid,
   Link,
   Alert,
   IconButton,
   InputAdornment,
   Divider,
   useTheme,
-  alpha
-} from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-import { Eye, EyeOff, Github, LogIn, Mail } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+  alpha,
+} from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Eye, EyeOff, Github, LogIn, Mail } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 const Login: React.FC = () => {
   const theme = useTheme();
   const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const { login, loginWithGoogle, register } = useAuth();
   const navigate = useNavigate();
 
   const validateForm = () => {
-    setError('');
-    
+    setError("");
+
     if (!email || !password) {
-      setError('Please fill in all fields');
+      setError("Please fill in all fields");
       return false;
     }
-    
+
     if (!isLogin && password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return false;
     }
-    
+
     return true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     try {
       setLoading(true);
       if (isLogin) {
@@ -61,10 +61,10 @@ const Login: React.FC = () => {
       } else {
         await register(email, password);
       }
-      navigate('/');
+      navigate("/");
     } catch (err) {
       console.error(err);
-      setError((err as Error).message || 'An error occurred');
+      setError((err as Error).message || "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -74,10 +74,10 @@ const Login: React.FC = () => {
     try {
       setLoading(true);
       await loginWithGoogle();
-      navigate('/');
+      navigate("/");
     } catch (err) {
       console.error(err);
-      setError((err as Error).message || 'Failed to sign in with Google');
+      setError((err as Error).message || "Failed to sign in with Google");
     } finally {
       setLoading(false);
     }
@@ -90,56 +90,85 @@ const Login: React.FC = () => {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        background: `linear-gradient(45deg, ${alpha(theme.palette.primary.main, 0.05)} 0%, ${alpha(theme.palette.secondary.main, 0.05)} 100%)`,
+        minHeight: "100vh",
+        display: "flex",
+        background: `linear-gradient(45deg, ${alpha(
+          theme.palette.primary.main,
+          0.05
+        )} 0%, ${alpha(theme.palette.secondary.main, 0.05)} 100%)`,
       }}
     >
-      <Container maxWidth="sm" sx={{ display: 'flex', alignItems: 'center' }}>
-        <Paper 
-          elevation={3} 
-          sx={{ 
-            p: { xs: 3, sm: 4 }, 
-            width: '100%', 
+      <Container maxWidth="sm" sx={{ display: "flex", alignItems: "center" }}>
+        <Paper
+          elevation={3}
+          sx={{
+            p: { xs: 3, sm: 4 },
+            width: "100%",
             borderRadius: 3,
-            background: 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
-            boxShadow: '0 8px 40px rgba(0,0,0,0.12)',
+            background: "linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)",
+            boxShadow: "0 8px 40px rgba(0,0,0,0.12)",
           }}
         >
-          <Box 
+          <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              mb: 4
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              mb: 4,
             }}
           >
             <Box
               sx={{
-                p: 2,
-                borderRadius: '50%',
-                background: `linear-gradient(45deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-                mb: 2
+                p: 0,
+                borderRadius: 2, // slight rounding on container for smoothness
+                background: "transparent",
+                mb: 2,
+                display: "inline-flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              <Github size={40} color="#fff" />
+              <img
+                src="https://i.postimg.cc/FR3xvZ4t/social.png"
+                alt="Github"
+                width={80}
+                height={80}
+                style={{
+                  display: "block",
+                  borderRadius: "16px",
+                  boxShadow: "0 0 8px 3px rgba(0, 123, 255, 0.6)",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "scale(1.15)";
+                  e.currentTarget.style.boxShadow =
+                    "0 0 15px 6px rgba(0, 123, 255, 0.9)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
+                  e.currentTarget.style.boxShadow =
+                    "0 0 8px 3px rgba(0, 123, 255, 0.6)";
+                }}
+              />
             </Box>
-            <Typography 
-              variant="h4" 
+
+            <Typography
+              variant="h4"
               component="h1"
-              sx={{ 
+              sx={{
                 fontWeight: 700,
                 background: `linear-gradient(45deg, ${theme.palette.primary.main} 30%, ${theme.palette.secondary.main} 90%)`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                textAlign: 'center',
-                mb: 1
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                textAlign: "center",
+                mb: 1,
               }}
             >
               GitHub Auto-Commit
             </Typography>
-            <Typography 
-              variant="body1" 
+            <Typography
+              variant="body1"
               color="text.secondary"
               align="center"
               sx={{ maxWidth: 300 }}
@@ -149,14 +178,14 @@ const Login: React.FC = () => {
           </Box>
 
           {error && (
-            <Alert 
-              severity="error" 
-              sx={{ 
+            <Alert
+              severity="error"
+              sx={{
                 mb: 3,
                 borderRadius: 2,
-                '& .MuiAlert-icon': {
-                  fontSize: '1.5rem'
-                }
+                "& .MuiAlert-icon": {
+                  fontSize: "1.5rem",
+                },
               }}
             >
               {error}
@@ -174,15 +203,15 @@ const Login: React.FC = () => {
               borderWidth: 2,
               borderColor: theme.palette.grey[300],
               color: theme.palette.text.primary,
-              '&:hover': {
+              "&:hover": {
                 borderWidth: 2,
-                backgroundColor: theme.palette.grey[50]
-              }
+                backgroundColor: theme.palette.grey[50],
+              },
             }}
             startIcon={
-              <img 
-                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
-                alt="Google" 
+              <img
+                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                alt="Google"
                 style={{ width: 20, height: 20 }}
               />
             }
@@ -191,11 +220,7 @@ const Login: React.FC = () => {
           </Button>
 
           <Divider sx={{ mb: 3 }}>
-            <Typography 
-              color="text.secondary" 
-              variant="body2"
-              sx={{ px: 2 }}
-            >
+            <Typography color="text.secondary" variant="body2" sx={{ px: 2 }}>
               OR
             </Typography>
           </Divider>
@@ -219,9 +244,9 @@ const Login: React.FC = () => {
                 ),
               }}
               sx={{
-                '& .MuiOutlinedInput-root': {
+                "& .MuiOutlinedInput-root": {
                   borderRadius: 2,
-                  '&:hover fieldset': {
+                  "&:hover fieldset": {
                     borderColor: theme.palette.primary.main,
                   },
                 },
@@ -234,9 +259,9 @@ const Login: React.FC = () => {
               fullWidth
               name="password"
               label="Password"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               id="password"
-              autoComplete={isLogin ? 'current-password' : 'new-password'}
+              autoComplete={isLogin ? "current-password" : "new-password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               InputProps={{
@@ -248,18 +273,22 @@ const Login: React.FC = () => {
                       edge="end"
                       size="small"
                     >
-                      {showPassword ? 
-                        <EyeOff size={20} color={theme.palette.text.secondary} /> : 
+                      {showPassword ? (
+                        <EyeOff
+                          size={20}
+                          color={theme.palette.text.secondary}
+                        />
+                      ) : (
                         <Eye size={20} color={theme.palette.text.secondary} />
-                      }
+                      )}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
               sx={{
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: 2
-                }
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: 2,
+                },
               }}
             />
 
@@ -270,7 +299,7 @@ const Login: React.FC = () => {
                 fullWidth
                 name="confirmPassword"
                 label="Confirm Password"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 id="confirmPassword"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -283,18 +312,22 @@ const Login: React.FC = () => {
                         edge="end"
                         size="small"
                       >
-                        {showPassword ? 
-                          <EyeOff size={20} color={theme.palette.text.secondary} /> : 
+                        {showPassword ? (
+                          <EyeOff
+                            size={20}
+                            color={theme.palette.text.secondary}
+                          />
+                        ) : (
                           <Eye size={20} color={theme.palette.text.secondary} />
-                        }
+                        )}
                       </IconButton>
                     </InputAdornment>
                   ),
                 }}
                 sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: 2
-                  }
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: 2,
+                  },
                 }}
               />
             )}
@@ -303,21 +336,24 @@ const Login: React.FC = () => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ 
-                mt: 3, 
+              sx={{
+                mt: 3,
                 mb: 2,
                 py: 1.5,
                 borderRadius: 2,
                 background: `linear-gradient(45deg, ${theme.palette.primary.main} 30%, ${theme.palette.secondary.main} 90%)`,
-                boxShadow: `0 4px 20px ${alpha(theme.palette.primary.main, 0.25)}`,
-                '&:hover': {
+                boxShadow: `0 4px 20px ${alpha(
+                  theme.palette.primary.main,
+                  0.25
+                )}`,
+                "&:hover": {
                   background: `linear-gradient(45deg, ${theme.palette.primary.dark} 30%, ${theme.palette.secondary.dark} 90%)`,
-                }
+                },
               }}
               loading={loading}
               startIcon={<LogIn size={20} />}
             >
-              {isLogin ? 'Sign In' : 'Create Account'}
+              {isLogin ? "Sign In" : "Create Account"}
             </LoadingButton>
 
             <Grid container justifyContent="center">
@@ -328,14 +364,16 @@ const Login: React.FC = () => {
                   onClick={() => setIsLogin(!isLogin)}
                   sx={{
                     color: theme.palette.primary.main,
-                    textDecoration: 'none',
+                    textDecoration: "none",
                     fontWeight: 500,
-                    '&:hover': {
-                      textDecoration: 'underline'
-                    }
+                    "&:hover": {
+                      textDecoration: "underline",
+                    },
                   }}
                 >
-                  {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Sign In"}
+                  {isLogin
+                    ? "Don't have an account? Sign Up"
+                    : "Already have an account? Sign In"}
                 </Link>
               </Grid>
             </Grid>
